@@ -2,11 +2,10 @@
 
 :root {
     --primary-color: #3498db;
-    --background-color: rgba(17, 17, 24, 0.9);
-    --container-bg: rgba(30, 30, 40, 0.85);
+    --container-bg: rgba(20, 20, 30, 0.75); /* Adjusted for more transparency */
     --text-color: #ecf0f1;
     --header-color: #ffffff;
-    --border-color: rgba(255, 255, 255, 0.1);
+    --border-color: rgba(255, 255, 255, 0.15);
     --success-color: #2ecc71;
     --danger-color: #e74c3c;
     --font-family: 'Poppins', sans-serif;
@@ -29,10 +28,10 @@ body {
     max-width: 950px;
     height: 75vh;
     background: var(--container-bg);
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(12px);
     border-radius: 20px;
     border: 1px solid var(--border-color);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
     animation: fadeIn 0.5s ease-out;
 }
 
@@ -93,7 +92,7 @@ body {
 }
 
 .items-table th {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.25);
     font-weight: 600;
     text-transform: uppercase;
     position: sticky;
