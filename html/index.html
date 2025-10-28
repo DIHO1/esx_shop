@@ -3,31 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sklep</title>
+    <title>Sklep | Tech Future</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Główny kontener sklepu -->
     <div id="shop-container" style="display: none;">
         <div class="shop-header">
-            <h2>SKLEP</h2>
+            <h2>TERMINAL ZAKUPOWY</h2>
             <button class="close-button">&times;</button>
         </div>
         <div class="shop-body">
-            <div class="items-grid">
-                <!-- Przedmioty będą wstawiane tutaj przez JS -->
-            </div>
+            <!-- Boczny panel na kategorie -->
+            <aside class="sidebar">
+                <ul class="category-list">
+                    <!-- Kategorie będą wstawiane tutaj przez JS -->
+                </ul>
+            </aside>
+            <!-- Główna zawartość z przedmiotami -->
+            <main class="content">
+                <div class="items-grid">
+                    <!-- Przedmioty będą wstawiane tutaj przez JS -->
+                </div>
+            </main>
         </div>
     </div>
 
+    <!-- Modal do wyboru ilości -->
     <div id="quantity-modal" style="display: none;">
         <div class="modal-content">
             <h3 id="modal-item-name"></h3>
-            <p>Podaj ilość, którą chcesz kupić:</p>
+            <p>WPROWADŹ ILOŚĆ:</p>
             <input type="number" id="quantity-input" min="1" value="1">
             <div class="modal-buttons">
-                <button id="confirm-purchase">Zatwierdź</button>
-                <button id="cancel-purchase">Anuluj</button>
+                <button id="cancel-purchase">ANULUJ</button>
+                <button id="confirm-purchase">ZATWIERDŹ</button>
             </div>
         </div>
     </div>

@@ -1,36 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Elementy UI
+    // --- Elementy UI ---
     const shopContainer = document.getElementById('shop-container');
     const closeButton = document.querySelector('.close-button');
     const itemsGrid = document.querySelector('.items-grid');
+    const categoryList = document.querySelector('.category-list');
 
-    // Elementy Modala
+    // --- Elementy Modala ---
     const quantityModal = document.getElementById('quantity-modal');
     const modalItemName = document.getElementById('modal-item-name');
     const quantityInput = document.getElementById('quantity-input');
     const confirmPurchaseBtn = document.getElementById('confirm-purchase');
     const cancelPurchaseBtn = document.getElementById('cancel-purchase');
 
-    // Stan
-    let currentShopItems = [];
+    // --- Stan Aplikacji ---
+    let allShopItems = [];
     let currentZone = null;
     let itemToBuy = null;
+    let activeCategory = 'all';
 
     // --- Komunikacja z Lua ---
     window.addEventListener('message', (event) => {
         if (event.data.action === 'open') {
             shopContainer.style.display = 'flex';
-            currentShopItems = event.data.items;
+            allShopItems = event.data.items;
             currentZone = event.data.zone;
-            populateShop(currentShopItems);
+            setupShop();
         }
     });
 
     const sendCloseNui = () => {
-        fetch(`https://esx_shops/close`, {
-            method: 'POST',
-            body: JSON.stringify({}),
-        }).catch(err => console.error('Error closing NUI:', err));
+        fetch(`https://esx_shops/close`, { method: 'POST', body: '{}' })
+            .catch(err => console.error('Error closing NUI:', err));
     };
 
     const sendBuyItem = (item, amount, zone) => {
@@ -41,16 +41,46 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(err => console.error('Error buying item:', err));
     };
 
-    // --- Funkcje UI ---
-    const closeNui = () => {
-        shopContainer.style.display = 'none';
-        sendCloseNui();
+    // --- Logika Sklepu ---
+    const setupShop = () => {
+        populateCategories();
+        filterItemsByCategory('all');
     };
 
-    const populateShop = (items) => {
+    const populateCategories = () => {
+        categoryList.innerHTML = '';
+        const categories = ['all', ...new Set(allShopItems.map(item => item.category || 'other'))];
+
+        categories.forEach(category => {
+            const li = document.createElement('li');
+            li.dataset.category = category;
+            li.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            if (category === activeCategory) {
+                li.classList.add('active');
+            }
+            categoryList.appendChild(li);
+        });
+    };
+
+    const filterItemsByCategory = (category) => {
+        activeCategory = category;
+
+        // Aktualizuj aktywną kategorię w UI
+        document.querySelectorAll('.category-list li').forEach(li => {
+            li.classList.toggle('active', li.dataset.category === category);
+        });
+
+        const filteredItems = category === 'all'
+            ? allShopItems
+            : allShopItems.filter(item => (item.category || 'other') === category);
+
+        populateItems(filteredItems);
+    };
+
+    const populateItems = (items) => {
         itemsGrid.innerHTML = '';
         if (!items || items.length === 0) {
-            itemsGrid.innerHTML = '<p>Ten sklep jest obecnie pusty.</p>';
+            itemsGrid.innerHTML = '<p style="color: var(--text-secondary);">Brak przedmiotów w tej kategorii.</p>';
             return;
         }
         items.forEach(item => {
@@ -66,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    // --- Logika Modala ---
     const openQuantityModal = (item) => {
         itemToBuy = item;
         modalItemName.textContent = item.label;
@@ -88,7 +119,27 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Event Listeners ---
-    closeButton.addEventListener('click', closeNui);
+    closeButton.addEventListener('click', () => {
+        shopContainer.style.display = 'none';
+        sendCloseNui();
+    });
+
+    categoryList.addEventListener('click', (event) => {
+        if (event.target.tagName === 'LI') {
+            filterItemsByCategory(event.target.dataset.category);
+        }
+    });
+
+    itemsGrid.addEventListener('click', (event) => {
+        if (event.target.classList.contains('buy-button')) {
+            const itemName = event.target.dataset.itemName;
+            const item = allShopItems.find(i => i.name === itemName);
+            if (item) {
+                openQuantityModal(item);
+            }
+        }
+    });
+
     cancelPurchaseBtn.addEventListener('click', closeQuantityModal);
     confirmPurchaseBtn.addEventListener('click', confirmPurchase);
 
@@ -97,24 +148,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (quantityModal.style.display === 'flex') {
                 closeQuantityModal();
             } else {
-                closeNui();
+                shopContainer.style.display = 'none';
+                sendCloseNui();
             }
         }
     });
 
-    itemsGrid.addEventListener('click', (event) => {
-        if (event.target.classList.contains('buy-button')) {
-            const itemName = event.target.dataset.itemName;
-            const item = currentShopItems.find(i => i.name === itemName);
-            if (item) {
-                openQuantityModal(item);
-            }
-        }
-    });
-
-    quantityInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-            confirmPurchase();
-        }
-    });
+    quantityInput.addEventListener('keydown', (e) => e.key === 'Enter' && confirmPurchase());
 });
