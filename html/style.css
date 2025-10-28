@@ -1,63 +1,85 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #3498db;
+    --background-color: rgba(17, 17, 24, 0.9);
+    --container-bg: rgba(30, 30, 40, 0.85);
+    --text-color: #ecf0f1;
+    --header-color: #ffffff;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --success-color: #2ecc71;
+    --danger-color: #e74c3c;
+    --font-family: 'Poppins', sans-serif;
+}
 
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: transparent;
-    color: #f0f0f0;
-    margin: 0;
-    padding: 0;
+    font-family: var(--font-family);
+    background: transparent;
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 #root {
     display: none;
-    width: 900px;
-    max-width: 95%;
-    background: #1e1e1e;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    border: 1px solid #333;
-    overflow: hidden;
+    width: 60vw;
+    max-width: 950px;
+    height: 75vh;
+    background: var(--container-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-out;
 }
 
 .shop-container {
-    padding: 30px;
+    padding: 35px;
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #444;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header h1 {
     margin: 0;
-    font-size: 2em;
+    font-size: 2.2em;
     font-weight: 700;
-    color: #00aaff;
+    color: var(--header-color);
+    letter-spacing: 1px;
 }
 
 .close-btn {
-    background: #ff4757;
+    background: var(--danger-color);
     border: none;
     color: white;
-    padding: 10px 15px;
-    border-radius: 8px;
+    padding: 12px 20px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1em;
-    transition: background 0.3s ease;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .close-btn:hover {
-    background: #e04050;
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.items-table-container {
+    overflow-y: auto;
+    flex-grow: 1;
 }
 
 .items-table {
@@ -66,42 +88,74 @@ body {
 }
 
 .items-table th, .items-table td {
-    padding: 15px;
+    padding: 18px;
     text-align: left;
-    border-bottom: 1px solid #333;
 }
 
 .items-table th {
-    background-color: #2a2a2a;
-    font-weight: 700;
+    background-color: rgba(0,0,0,0.2);
+    font-weight: 600;
     text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.items-table tbody tr {
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease;
 }
 
 .items-table tbody tr:hover {
-    background-color: #2c2c2c;
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .quantity-input {
-    width: 60px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background: #333;
-    color: #fff;
+    width: 65px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: rgba(0,0,0,0.2);
+    color: var(--text-color);
     text-align: center;
-    margin-right: 10px;
+    font-size: 1em;
+    margin-right: 12px;
 }
 
 .buy-btn {
-    background: #00aaff;
+    background: var(--success-color);
     border: none;
     color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .buy-btn:hover {
-    background: #0088cc;
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
