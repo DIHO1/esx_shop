@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
 :root {
-    --container-bg: rgba(15, 15, 22, 0.7);
+    --container-bg: rgba(10, 10, 15, 0.45); /* Zwiększona przezroczystość */
     --text-color: #ecf0f1;
     --header-color: #ffffff;
     --border-color: rgba(255, 255, 255, 0.1);
@@ -85,7 +85,7 @@ body {
 
 .search-bar-container {
     position: relative;
-    flex-grow: 1;
+    max-width: 380px; /* Skrócenie paska wyszukiwania */
 }
 
 .search-bar {
