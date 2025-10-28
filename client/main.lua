@@ -1,6 +1,8 @@
 local nuiOpen = false
 
 function openShopMenu(zone)
+    if not zone or not Config.Zones[zone] then return end
+
     nuiOpen = true
     SetNuiFocus(true, true)
     SendNUIMessage({
@@ -10,7 +12,7 @@ function openShopMenu(zone)
     })
 end
 
--- Create Blips
+-- Create Blips and ox_target zones
 CreateThread(function()
     for k, v in pairs(Config.Zones) do
         for i = 1, #v.Pos do
@@ -33,10 +35,11 @@ CreateThread(function()
                 options = {
                     {
                         name = 'shop:open',
-                        event = 'esx_shops:openMenu',
                         icon = 'fa-solid fa-store',
                         label = TranslateCap('shop'),
-                        zone = k
+                        onSelect = function()
+                            openShopMenu(k)
+                        end
                     }
                 }
             })
@@ -44,17 +47,15 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent('esx_shops:openMenu', function(data)
-    openShopMenu(data.zone)
-end)
-
 RegisterNUICallback('close', function(_, cb)
+    if not nuiOpen then return end
     nuiOpen = false
     SetNuiFocus(false, false)
     cb({})
 end)
 
 RegisterNUICallback('buy', function(data, cb)
+    if not nuiOpen then return end
     TriggerServerEvent('esx_shops:buyItem', data.item, data.amount, data.zone)
     cb({})
 end)
