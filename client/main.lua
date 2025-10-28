@@ -1,6 +1,8 @@
 local nuiOpen = false
 
 function openShopMenu(zone)
+    if not zone or not Config.Zones[zone] then return end
+
     nuiOpen = true
     SetNuiFocus(true, true)
     SendNUIMessage({
@@ -49,12 +51,14 @@ RegisterNetEvent('esx_shops:openMenu', function(data)
 end)
 
 RegisterNUICallback('close', function(_, cb)
+    if not nuiOpen then return end
     nuiOpen = false
     SetNuiFocus(false, false)
     cb({})
 end)
 
 RegisterNUICallback('buy', function(data, cb)
+    if not nuiOpen then return end
     TriggerServerEvent('esx_shops:buyItem', data.item, data.amount, data.zone)
     cb({})
 end)
