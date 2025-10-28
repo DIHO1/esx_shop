@@ -69,13 +69,16 @@ const App = () => {
                 </div>
 
                 <div className="controls">
-                    <input
-                        type="text"
-                        placeholder="Search for items..."
-                        className="search-bar"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
+                    <div className="search-bar-container">
+                        <i className="fas fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            placeholder="Search for items..."
+                            className="search-bar"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
                     <div className="categories">
                         {categories.map(cat => (
                             <button
@@ -95,7 +98,7 @@ const App = () => {
                             <tr>
                                 <th>Item</th>
                                 <th>Price</th>
-                                <th style={{textAlign: 'center'}}>Quantity & Action</th>
+                                <th className="action-cell">Quantity & Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,4 +121,3 @@ const App = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('root-container'));
-// Ensure you have a div with id="root-container" in your index.html
