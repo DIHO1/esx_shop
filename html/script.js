@@ -66,7 +66,7 @@ const App = () => {
                             <td>${item.price}</td>
                             <td>
                                 <input className="quantity-input" type="number" min="1" defaultValue="1" />
-                                <button className="buy-btn" onClick={(e) => handleBuy(item, e.target.previousSibling.value)}>Buy</button>
+                                <button className="buy-btn" onClick={(e) => handleBuy(item, e.target.previousElementSibling.value)}>Buy</button>
                             </td>
                         </tr>
                     ))}

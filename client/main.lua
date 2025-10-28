@@ -12,7 +12,7 @@ function openShopMenu(zone)
     })
 end
 
--- Create Blips
+-- Create Blips and ox_target zones
 CreateThread(function()
     for k, v in pairs(Config.Zones) do
         for i = 1, #v.Pos do
@@ -35,19 +35,16 @@ CreateThread(function()
                 options = {
                     {
                         name = 'shop:open',
-                        event = 'esx_shops:openMenu',
                         icon = 'fa-solid fa-store',
                         label = TranslateCap('shop'),
-                        zone = k
+                        onSelect = function()
+                            openShopMenu(k)
+                        end
                     }
                 }
             })
         end
     end
-end)
-
-RegisterNetEvent('esx_shops:openMenu', function(data)
-    openShopMenu(data.zone)
 end)
 
 RegisterNUICallback('close', function(_, cb)
